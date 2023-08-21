@@ -1,20 +1,20 @@
 import dbcreds
 import dbhelper
-import uuid
+from uuid import uuid4
 from flask import Flask, request, make_response, jsonify
 
 app = Flask(__name__)
 
 app.post("/api/admin")
-def post_image():
+def post_discogs():
     try:
         # Use request.files to make sure the uploaded_image is there
         # Again you can call it whatever you would like
-        is_valid = dbhelper.check_endpoint_info(request.files, ['uploaded_image'])
+        is_valid = dbhelper.check_endpoint_info(request.files, ['uploaded_csv'])
         if(is_valid != None):
-            return make_response(jsonify(is_valid), 400)
+            return make_response(jsonify(is_valid),400)
         # Save the image using the helper found in apihelpers
-        file_name = dbhelper.save_file(request.files['uploaded_image'])
+        file_name = dbhelper.save_file(request.files['uploaded_csv'])
         # If the filename is None something has gone wrong
         error = dbhelper.check_endpoint_info(request.form,["title","image_description"])
         if(error != None):
